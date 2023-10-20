@@ -1,11 +1,18 @@
 package src;
 
+import src.exceptions.PilhaCheiaException;
+import src.exceptions.PilhaVaziaException;
+
 public class Pilha {
-    private String elemento;
+    private Object[] elementos;
     private int qntd;
 
+    public Pilha(int maximo) {
+        elementos = new Object[maximo];
+    }
+
     public boolean estaVazia() {
-        return (elemento == null);
+        return qntd == 0;
     }
 
     public int tamanho() {
@@ -13,11 +20,21 @@ public class Pilha {
     }
 
     public void empilha(String elemento) {
-        this.elemento = elemento;
+        if(qntd == elementos.length) throw new PilhaCheiaException("Não é possivel empilhar mais elementos.");
+
+        this.elementos[qntd] = elemento;
         qntd++;
     }
 
-    public String topo() {
-        return elemento;
+    public Object topo() {
+        return elementos[qntd-1];
+    }
+
+    public Object desempilha() {
+        if(estaVazia()) throw new PilhaVaziaException("Não é possivel desempilhar.");
+
+        Object topo = topo();
+        qntd--;
+        return topo;
     }
 }
